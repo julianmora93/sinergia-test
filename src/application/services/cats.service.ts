@@ -4,6 +4,7 @@ import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { catchError, firstValueFrom, map } from "rxjs";
 import { BreedEntity } from "src/domain/entities/breed.entity";
 import { CatEntity } from "src/domain/entities/cat.entity";
+import { ImageEntity } from "src/domain/entities/image.entity";
 
 @Injectable()
 export class CatsService {
@@ -25,7 +26,7 @@ export class CatsService {
                 `${this._baseEndpoint}/breeds?limit=100&order=asc`,
                 this._axiosRequestConfig
             )
-            .pipe(map((response ) => response .data))
+            .pipe(map((response ) => response.data))
             .pipe(
                 catchError(() => {
                     throw new ForbiddenException('Ocurrió un error en la consulta del API.', '0x001');
@@ -40,7 +41,7 @@ export class CatsService {
                 `${this._baseEndpoint}/breeds/${id}`,
                 this._axiosRequestConfig
             ).pipe(
-                map((response ) => response .data)
+                map((response ) => response.data)
             ).pipe(
                 catchError((err) => {
                     if(err.response.status === 400 && err.response.data === 'INVALID_DATA'){
@@ -52,13 +53,31 @@ export class CatsService {
         );
     }
 
-    search(_param1: any, _param2: any, _param3: any): Promise<CatEntity[] | null> {
+    getImageById(id: string): Promise<ImageEntity[] | null> {
         return firstValueFrom(
             this.httpService.get(
-                `${this._baseEndpoint}/images/search?mime_types=jpg&format=json&size=med&order=DESC&limit=1000&has_breeds=true&include_breeds=true&include_categories=false`,
+                `${this._baseEndpoint}/images/search?breed_ids=${id}`,
                 this._axiosRequestConfig
             ).pipe(
-                map((response ) => response .data)
+                map((response ) => response.data)
+            ).pipe(
+                catchError((err) => {
+                    if(err.response.status === 400 && err.response.data === 'INVALID_DATA'){
+                        throw new ForbiddenException('No hay datos relacionados.', '0x003');
+                    }
+                    throw new ForbiddenException('Ocurrió un error en la consulta del API.', '0x004');
+                })
+            )
+        );
+    }
+
+    search(q: string): Promise<BreedEntity[] | null> {
+        return firstValueFrom(
+            this.httpService.get(
+                `${this._baseEndpoint}/breeds/search?q=${q}`,
+                this._axiosRequestConfig
+            ).pipe(
+                map((response ) => response.data)
             ).pipe(
                 catchError(() => {
                     throw new ForbiddenException('Ocurrió un error en la consulta del API.', '0x005');

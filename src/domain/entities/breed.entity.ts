@@ -1,5 +1,6 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 import { WeightEntity } from "./weight.entity";
+import { ImageEntity } from "./image.entity";
 
 @ObjectType()
 export class BreedEntity {
@@ -114,5 +115,8 @@ export class BreedEntity {
 
     @Field({nullable: true})
     reference_image_id: string;
+
+    @Field({nullable: true})
+    image: ImageEntity;
 
 }

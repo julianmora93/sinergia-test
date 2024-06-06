@@ -7,6 +7,13 @@ type WeightEntity {
   metric: String
 }
 
+type ImageEntity {
+  id: String
+  width: Float
+  height: Float
+  url: String
+}
+
 type BreedEntity {
   weight: WeightEntity
   id: String
@@ -45,18 +52,12 @@ type BreedEntity {
   wikipedia_url: String
   hypoallergenic: Float
   reference_image_id: String
-}
-
-type CatEntity {
-  breeds: [BreedEntity!]
-  id: String
-  url: String
-  width: Float
-  height: Float
+  image: ImageEntity
 }
 
 type Query {
   getAll: [BreedEntity!]
   getById(id: String!): BreedEntity
-  seach(param1: String!, param2: String!, param3: String!): [CatEntity!]
+  getImageById(id: String!): [ImageEntity!]
+  search(q: String!): [BreedEntity!]
 }
