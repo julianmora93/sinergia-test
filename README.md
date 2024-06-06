@@ -1,3 +1,10 @@
+
+
+
+https://github.com/julianmora93/sinergia-test-backend/assets/133082144/285c7f51-2529-495b-b697-6ca4cb77ce0d
+
+
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
