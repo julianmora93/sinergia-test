@@ -1,29 +1,70 @@
-import { Injectable } from "@nestjs/common";
-import { CatsServiceInterface } from "../interfaces/cats.service.interface";
-import { CatRepository } from "src/domain/repositories/cat.repository";
+import { HttpService } from "@nestjs/axios";
+import { ForbiddenException, Injectable } from "@nestjs/common";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { catchError, firstValueFrom, map } from "rxjs";
+import { BreedEntity } from "src/domain/entities/breed.entity";
 import { CatEntity } from "src/domain/entities/cat.entity";
 
 @Injectable()
-export class CatsService implements CatsServiceInterface {
+export class CatsService {
     
-    constructor(private readonly catRepository: CatRepository) {}
-  
-    // async getAllCats(): Promise<CatEntity[]> {
-    //     return this.catRepository.getAll();
-    // }
+    private readonly _baseEndpoint: string = 'https://api.thecatapi.com/v1';
+    private readonly _header: any = { 'x-api-key': 'live_JBT0Ah0Nt12iyl2IpjQVLDWjcLk0GQwf4zI9wBMfmfejKmcC31mOJp4yJz5TsOUPlive_JBT0Ah0Nt12iyl2IpjQVLDWjcLk0GQwf4zI9wBMfmfejKmcC31mOJp4yJz5TsOUP' };
+    private _axiosRequestConfig: AxiosRequestConfig;
+    
+    constructor(private readonly httpService: HttpService) {
+        this._axiosRequestConfig = {
+            headers: this._header
+        };
+    }
 
-    // async getCatById(id: string): Promise<CatEntity | null> {
-    //     return this.catRepository.getById(id);
-    // }
+    getAll(): Promise<BreedEntity[] | null> {
+        return firstValueFrom(
+            this.httpService
+            .get(
+                `${this._baseEndpoint}/breeds?limit=100&order=asc`,
+                this._axiosRequestConfig
+            )
+            .pipe(map((response ) => response .data))
+            .pipe(
+                catchError(() => {
+                    throw new ForbiddenException('Ocurrió un error en la consulta del API.', '0x001');
+                })
+            )
+        );
+    }
 
-    // async searchCats(param1: any, param2: any, param3: any): Promise<CatEntity[]> {
-    //     return this.catRepository.search(param1, param2, param3);
-    // }
+    getById(id: string): Promise<BreedEntity | null> {
+        return firstValueFrom(
+            this.httpService.get(
+                `${this._baseEndpoint}/breeds/${id}`,
+                this._axiosRequestConfig
+            ).pipe(
+                map((response ) => response .data)
+            ).pipe(
+                catchError((err) => {
+                    if(err.response.status === 400 && err.response.data === 'INVALID_DATA'){
+                        throw new ForbiddenException('No hay datos relacionados.', '0x003');
+                    }
+                    throw new ForbiddenException('Ocurrió un error en la consulta del API.', '0x004');
+                })
+            )
+        );
+    }
 
-    getAllCats = ():  Promise<CatEntity[]> => this.catRepository.getAll();
-
-    getCatById = (id: string): Promise<CatEntity | null> => this.catRepository.getById(id);
-
-    searchCats = (param1: any, param2: any, param3: any): Promise<CatEntity[]> => this.catRepository.search(param1, param2, param3);
+    search(_param1: any, _param2: any, _param3: any): Promise<CatEntity[] | null> {
+        return firstValueFrom(
+            this.httpService.get(
+                `${this._baseEndpoint}/images/search?mime_types=jpg&format=json&size=med&order=DESC&limit=1000&has_breeds=true&include_breeds=true&include_categories=false`,
+                this._axiosRequestConfig
+            ).pipe(
+                map((response ) => response .data)
+            ).pipe(
+                catchError(() => {
+                    throw new ForbiddenException('Ocurrió un error en la consulta del API.', '0x005');
+                })
+            )
+        );
+    }
 
 }

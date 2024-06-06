@@ -1,0 +1,62 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type WeightEntity {
+  imperial: String
+  metric: String
+}
+
+type BreedEntity {
+  weight: WeightEntity
+  id: String
+  name: String
+  cfa_url: String
+  vetstreet_url: String
+  vcahospitals_url: String
+  temperament: String
+  origin: String
+  country_codes: String
+  country_code: String
+  description: String
+  life_span: String
+  indoor: Float
+  lap: Float
+  alt_names: String
+  adaptability: Float
+  affection_level: Float
+  child_friendly: Float
+  dog_friendly: Float
+  energy_level: Float
+  grooming: Float
+  health_issues: Float
+  intelligence: Float
+  shedding_level: Float
+  social_needs: Float
+  stranger_friendly: Float
+  vocalisation: Float
+  experimental: Float
+  hairless: Float
+  natural: Float
+  rare: Float
+  rex: Float
+  suppressed_tail: Float
+  short_legs: Float
+  wikipedia_url: String
+  hypoallergenic: Float
+  reference_image_id: String
+}
+
+type CatEntity {
+  breeds: [BreedEntity!]
+  id: String
+  url: String
+  width: Float
+  height: Float
+}
+
+type Query {
+  getAll: [BreedEntity!]
+  getById(id: String!): BreedEntity
+  seach(param1: String!, param2: String!, param3: String!): [CatEntity!]
+}

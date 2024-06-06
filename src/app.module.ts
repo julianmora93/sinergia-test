@@ -11,7 +11,7 @@ import { CatsResolver } from './infrastructure/resolvers/cats.resolver';
     imports: [
         GraphQLModule.forRoot<ApolloDriverConfig>({
             driver: ApolloDriver,
-            autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+            autoSchemaFile: join(process.cwd(), 'src/infrastructure/resolvers/schemas/schema.app.gql'),
             playground: false,
             plugins: [ApolloServerPluginLandingPageLocalDefault()]
         }),

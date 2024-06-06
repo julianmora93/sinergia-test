@@ -1,20 +1,22 @@
+import { Field, ObjectType } from "@nestjs/graphql";
+import { BreedEntity } from "./breed.entity";
+
+@ObjectType()
 export class CatEntity {
-    breeds: Breed[];
+
+    @Field(() => [BreedEntity], {nullable: true})
+    breeds: BreedEntity[];
+
+    @Field({nullable: true})
     id: string;
+
+    @Field({nullable: true})
     url: string;
+
+    @Field({nullable: true})
     width: number;
+
+    @Field({nullable: true})
     height: number;
-
-    constructor(breeds: Breed[], id: string, url: string, width: number, height: number) {
-        this.breeds = breeds;
-        this.id = id;
-        this.url = url;
-        this.width = width;
-        this.height = height;
-    }
-
-    getBreedNames(): string[] {
-        return this.breeds.map(breed => breed.name);
-    }
-
+    
 }
