@@ -2,14 +2,10 @@ import { join } from 'path';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { FirstTestModule } from './first-module/first-test.module';
-import { FirstTestResolver } from './first-resolver/first-test.resolver';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
-// import { BreedModule } from './modules/breed.module';
-// import { BreedService } from './services/breed.service';
 import { HttpModule } from '@nestjs/axios';
-// import { ApiModule } from './api/api.module';
-// import { ApiService } from './api/api.service';
+import { CatsModule } from './infrastructure/modules/cats.module';
+import { CatsResolver } from './infrastructure/resolvers/cats.resolver';
 
 @Module({
     imports: [
@@ -20,14 +16,10 @@ import { HttpModule } from '@nestjs/axios';
             plugins: [ApolloServerPluginLandingPageLocalDefault()]
         }),
         HttpModule,
-        FirstTestModule,
-        //ApiModule,
-        //BreedModule
+        CatsModule
     ],
     providers: [
-        FirstTestResolver, 
-        //ApiService
-        //BreedService
+        CatsResolver
     ]
 })
 export class AppModule {}
