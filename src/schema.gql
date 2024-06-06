@@ -1,0 +1,60 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type WeightModel {
+  imperial: String
+  metric: String
+}
+
+type CatModel {
+  weight: WeightModel
+  id: String
+  name: String
+  vetstreet_url: String
+  temperament: String
+  origin: String
+  country_codes: String
+  country_code: String
+  description: String
+  life_span: String
+  indoor: Int!
+  alt_names: String
+  adaptability: Int!
+  affection_level: Int!
+  child_friendly: Int!
+  dog_friendly: Int!
+  energy_level: Int!
+  grooming: Int!
+  health_issues: Int!
+  intelligence: Int!
+  shedding_level: Int!
+  social_needs: Int!
+  stranger_friendly: Int!
+  vocalisation: Int!
+  experimental: Int!
+  hairless: Int!
+  natural: Int!
+  rare: Int!
+  rex: Int!
+  suppressed_tail: Int!
+  short_legs: Int!
+  wikipedia_url: String
+  hypoallergenic: Int!
+  reference_image_id: String
+}
+
+type Query {
+  """Primer query con NestJS & GgraphQL"""
+  firstTestQuery: String!
+
+  """Número aleatorio"""
+  randomNumber: Float!
+
+  """Método que retorna un número aleatorio de 0 a 10"""
+  randomFromZeroTo: Int!
+
+  """Método que retorna un número aleatorio basado en dos parámetro"""
+  randomByParameters(minValue: Int!, maxValue: Int): Int!
+  serviceCat: [CatModel!]!
+}
